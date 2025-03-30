@@ -144,6 +144,6 @@ typedef struct entity_t entity_t;
 #define EDITOR_IGNORE(                                                         \
     IGNORE) // Whether this entity can be created in the editor. Default false
 
-#include "entity_custom_def.h"
+#include "entity_def_custom.h"
 
 #endif
