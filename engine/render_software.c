@@ -1,4 +1,4 @@
-#include "alloc.h"
+// #include "alloc.h"
 #include "engine.h"
 #include "platform.h"
 #include "render.h"
@@ -119,7 +119,7 @@ texture_t texture_create(vec2i_t size, rgba_t *pixels) {
   error_if(textures_len >= RENDER_TEXTURES_MAX, "RENDER_TEXTURES_MAX reached");
 
   textures[textures_len].size = size;
-  textures[textures_len].pixels = bump_alloc(sizeof(rgba_t) * size.x * size.y);
+  textures[textures_len].pixels = malloc(sizeof(rgba_t) * size.x * size.y);
   memcpy(textures[textures_len].pixels, pixels,
          sizeof(rgba_t) * size.x * size.y);
 

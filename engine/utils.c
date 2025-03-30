@@ -5,6 +5,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#define PL_JSON_IMPLEMENTATION
+#include "../libs/pl_json.h"
+
 bool file_exists(const char *path) {
   struct stat s;
   return (stat(path, &s) == 0);
@@ -110,4 +113,21 @@ float rand_float(float min, float max) {
 
 int32_t rand_int(int32_t min, int32_t max) {
   return min + rand_uint64() % (max - min + 1);
+}
+
+json_t *json_parse(uint8_t *data, uint32_t len) {
+  uint32_t size_req = 0;
+  uint32_t tokens_capacity = 1 + len / 2;
+
+  json_token_t *tokens = malloc(tokens_capacity * sizeof(json_token_t));
+  int32_t tokens_len = json_tokenize((char *)data, len, tokens, tokens_capacity,
+                                     (void *)&size_req);
+  if (tokens_len <= 0) {
+    return NULL;
+  }
+
+  json_t *v = malloc(size_req);
+  json_parse_tokens((char *)data, tokens, tokens_len, v);
+  free(tokens);
+  return v;
 }

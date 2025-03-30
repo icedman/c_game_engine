@@ -120,9 +120,9 @@ static void draw(void) {
 
 
 	if (game_over) {
-		// font_draw(g.font, vec2(render_size().x / 2, 32), "Game Over!",  FONT_ALIGN_CENTER);
-		// font_draw(g.font, vec2(render_size().x / 2, 32 + g.font->line_height * 1), "Press Enter", FONT_ALIGN_CENTER);
-		// font_draw(g.font, vec2(render_size().x / 2, 32 + g.font->line_height * 2), "to Restart",  FONT_ALIGN_CENTER);
+		font_draw(g.font, vec2(render_size().x / 2, 32), "Game Over!",  FONT_ALIGN_CENTER);
+		font_draw(g.font, vec2(render_size().x / 2, 32 + g.font->line_height * 1), "Press Enter", FONT_ALIGN_CENTER);
+		font_draw(g.font, vec2(render_size().x / 2, 32 + g.font->line_height * 2), "to Restart",  FONT_ALIGN_CENTER);
 	}
 	else {
 		render_push();
@@ -134,7 +134,7 @@ static void draw(void) {
 		render_pop();
 	}
 		
-	// font_draw(g.font, vec2(render_size().x - 2, 2), str_format("%d", (int)g.score), FONT_ALIGN_RIGHT);
+	font_draw(g.font, vec2(render_size().x - 2, 2), str_format("%d", (int)g.score), FONT_ALIGN_RIGHT);
 }
 
 scene_t scene_game = {

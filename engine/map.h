@@ -5,9 +5,9 @@
 // collision testing with trace(). Maps can be loaded from a json_t or created
 // with a data array.
 
-#include "types.h"
-// #include "../libs/pl_json.h"
+#include "../libs/pl_json.h"
 #include "image.h"
+#include "types.h"
 
 typedef struct map_anim_def_t map_anim_def_t;
 
@@ -70,7 +70,7 @@ map_t *map_with_data(uint16_t tile_size, vec2i_t size, uint16_t *data);
         ]
 }
 */
-// map_t *map_from_json(json_t *def);
+map_t *map_from_json(json_t *def);
 
 // Set the frame time and animation sequence for a particular tile. You can
 // only do this in your scene_init()

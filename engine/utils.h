@@ -4,6 +4,7 @@
 // Various math and utility functions
 // FIXME: some of these are unused and should probably be removed?
 
+#include "../libs/pl_json.h"
 #include "types.h"
 #include <string.h>
 
@@ -151,5 +152,9 @@ uint8_t *file_load(const char *path, uint32_t *bytes_read);
 // Writes bytes with len into the file at path. Returns the number of bytes
 // written, or 0 on failure.
 uint32_t file_store(const char *path, void *bytes, int32_t len);
+
+// Parse the string data into temp allocated json. Must be explicitly freed
+// with temp_free(). Returns NULL on failure.
+json_t *json_parse(uint8_t *data, uint32_t len);
 
 #endif

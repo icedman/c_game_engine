@@ -26,49 +26,49 @@ map_t *map_with_data(uint16_t tile_size, vec2i_t size, uint16_t *data) {
   return map;
 }
 
-// map_t *map_from_json(json_t *def) {
-// 	error_if(engine_is_running(), "Cannot create map during gameplay");
+map_t *map_from_json(json_t *def) {
+  error_if(engine_is_running(), "Cannot create map during gameplay");
 
-// 	map_t *map = malloc(sizeof(map_t));
+  map_t *map = malloc(sizeof(map_t));
 
-// 	map->size.x = json_number(json_value_for_key(def, "width"));
-// 	map->size.y = json_number(json_value_for_key(def, "height"));
-// 	map->tile_size = json_number(json_value_for_key(def, "tilesize"));
-// 	map->distance = json_number(json_value_for_key(def, "distance"));
-// 	map->foreground = json_bool(json_value_for_key(def, "foreground"));
-// 	error_if(map->distance == 0, "invalid distance for map");
-// 	map->repeat = json_bool(json_value_for_key(def, "repeat"));
+  map->size.x = json_number(json_value_for_key(def, "width"));
+  map->size.y = json_number(json_value_for_key(def, "height"));
+  map->tile_size = json_number(json_value_for_key(def, "tilesize"));
+  map->distance = json_number(json_value_for_key(def, "distance"));
+  map->foreground = json_bool(json_value_for_key(def, "foreground"));
+  error_if(map->distance == 0, "invalid distance for map");
+  map->repeat = json_bool(json_value_for_key(def, "repeat"));
 
-// 	json_t *name = json_value_for_key(def, "name");
-// 	if (name && name->type == JSON_STRING) {
-// 		error_if(name->len > 15, "Map name exceeds 15 chars: %s",
-// name->string); 		strcpy(map->name, name->string);
-// 	}
+  json_t *name = json_value_for_key(def, "name");
+  if (name && name->type == JSON_STRING) {
+    error_if(name->len > 15, "Map name exceeds 15 chars: %s", name->string);
+    strcpy(map->name, name->string);
+  }
 
-// 	char *tileset_name = json_string(json_value_for_key(def,
-// "tilesetName")); 	if (tileset_name && tileset_name[0]) {
-// printf("loaded map %d %d %s\n", map->size.x, map->size.y, tileset_name);
-// map->tileset = image(tileset_name);
-// 	}
+  char *tileset_name = json_string(json_value_for_key(def, "tilesetName"));
+  if (tileset_name && tileset_name[0]) {
+    printf("loaded map %d %d %s\n", map->size.x, map->size.y, tileset_name);
+    map->tileset = image(tileset_name);
+  }
 
-// 	json_t *data = json_value_for_key(def, "data");
-// 	error_if(data->type != JSON_ARRAY, "Map data is not an array");
-// 	error_if(data->len != map->size.y, "Map data height is %d expected %d",
-// data->len, map->size.y);
+  json_t *data = json_value_for_key(def, "data");
+  error_if(data->type != JSON_ARRAY, "Map data is not an array");
+  error_if(data->len != map->size.y, "Map data height is %d expected %d",
+           data->len, map->size.y);
 
-// 	map->data = malloc(sizeof(uint16_t) * map->size.x * map->size.y);
+  map->data = malloc(sizeof(uint16_t) * map->size.x * map->size.y);
 
-// 	int index = 0;
-// 	for (int y = 0; y < data->len; y++) {
-// 		json_t *row = json_value_at(data, y);
-// 		for (int x = 0; x < row->len; x++, index++) {
-// 			map->data[index] = json_number(json_value_at(row, x));
-// 			map->max_tile = max(map->max_tile, map->data[index]);
-// 		}
-// 	}
+  int index = 0;
+  for (int y = 0; y < data->len; y++) {
+    json_t *row = json_value_at(data, y);
+    for (int x = 0; x < row->len; x++, index++) {
+      map->data[index] = json_number(json_value_at(row, x));
+      map->max_tile = max(map->max_tile, map->data[index]);
+    }
+  }
 
-// 	return map;
-// }
+  return map;
+}
 
 void map_set_anim_with_len(map_t *map, uint16_t tile, float frame_time,
                            uint16_t *sequence, uint16_t sequence_len) {

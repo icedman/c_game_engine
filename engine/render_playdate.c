@@ -65,37 +65,47 @@ void render_frame_end(void) {}
 void render_draw_quad(quadverts_t *quad, texture_t texture_handle) {
   PlaydateAPI *pd = playdate;
 
-  LCDBitmap *texture = textures[texture_handle.index];
-  vec2i_t src_size = texture_sizes[texture_handle.index];
-
   vertex_t *v = quad->vertices;
   rgba_t color = v[0].color;
-  int dx = v[0].pos.x;
-  int dy = v[0].pos.y;
 
-  float dist1 = vec2_dist(vec2(0, 0), vec2(src_size.x, src_size.y));
-  float dist2 = vec2_dist(v[0].pos, v[2].pos);
-  double sz = dist2 / dist1;
-  pd->graphics->drawScaledBitmap(texture, dx, dy, sz, sz);
+  float l = rgbToLuminance(color.r, color.g, color.b);
 
   // int coords[8] = {
-  // 	v[0].pos.x, v[0].pos.y,
-  // 	v[1].pos.x, v[1].pos.y,
-  // 	v[2].pos.x, v[2].pos.y,
-  // 	v[3].pos.x, v[3].pos.y,
+  //  v[0].pos.x, v[0].pos.y,
+  //  v[1].pos.x, v[1].pos.y,
+  //  v[2].pos.x, v[2].pos.y,
+  //  v[3].pos.x, v[3].pos.y,
   // };
   // LCDColor clr = get_pattern(texture_handle.index % 4);
   // pd->graphics->fillPolygon(4, coords, clr, kPolygonFillNonZero);
 
   // for(int i=0; i<4; i++) {
-  // 	vertex_t v1 = v[i];
-  // 	vertex_t v2 = v[(i+1)%4];
-  // 	int x1 = v1.pos.x;
-  // 	int y1 = v1.pos.y;
-  // 	int x2 = v2.pos.x;
-  // 	int y2 = v2.pos.y;
-  // 	pd->graphics->drawLine(x1, y1, x2, y2, 2, kColorBlack);
+  //   vertex_t v1 = v[i];
+  //   vertex_t v2 = v[(i+1)%4];
+  //   int x1 = v1.pos.x;
+  //   int y1 = v1.pos.y;
+  //   int x2 = v2.pos.x;
+  //   int y2 = v2.pos.y;
+  //   pd->graphics->drawLine(x1, y1, x2, y2, 1, get_pattern(0));
   // }
+
+  LCDBitmap *texture = textures[texture_handle.index];
+  vec2i_t texture_size = texture_sizes[texture_handle.index];
+  int src_tiles = texture_size.x / texture_size.y;
+
+  int dx = v[0].pos.x;
+  int dy = v[0].pos.y;
+  vec2_t dst_size = vec2(v[1].pos.x - v[0].pos.x, v[2].pos.y - v[1].pos.y);
+  vec2_t src_size = vec2(v[1].uv.x - v[0].uv.x, v[2].uv.y - v[1].uv.y);
+
+  double sz = vec2_len(dst_size) / vec2_len(src_size);
+
+  int sx = v[0].uv.x * sz;
+  int sy = v[0].uv.y * sz;
+
+  pd->graphics->setClipRect(dx, dy, dst_size.x, dst_size.y);
+  pd->graphics->drawScaledBitmap(texture, dx - sx, dy - sy, sz, sz);
+  pd->graphics->clearClipRect();
 }
 
 texture_mark_t textures_mark(void) {

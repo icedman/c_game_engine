@@ -20,6 +20,7 @@ engine_files = [
     'engine/trace.c',
     'engine/entity.c',
     'engine/engine.c',
+    'engine/font.c',
     'engine/map.c',
     'src/scenes/game.c',
     'src/entities/coin.c',
@@ -43,6 +44,6 @@ executable('game',
     engine_files,
     game_files,
     include_directories: [ includes ],
-    c_args: ['-DRENDER_GL', '-DPLATFORM_SDL'],
+    c_args: ['-DRENDER_SOFTWARE', '-DPLATFORM_SDL'],
     dependencies: [ m_dep, sdl2_dep, sdl2_mixer_dep, sdl2_image_dep, gl_dep ]
 )

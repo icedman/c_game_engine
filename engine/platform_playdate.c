@@ -1,6 +1,7 @@
 #include "engine.h"
-#include "pd_api.h"
 #include "platform.h"
+
+#include "pd_api.h"
 
 #define WIDTH 400
 #define HEIGHT 240
@@ -70,6 +71,26 @@ void platform_prepare_frame(void) {
 void platform_end_frame(void) {
   PlaydateAPI *pd = playdate;
   pd->system->drawFPS(0, 0);
+}
+
+// Load a file into temp memory. Must be freed via temp_free()
+uint8_t *platform_load_asset(const char *name, uint32_t *bytes_read) {
+  PlaydateAPI *pd = playdate;
+  SDFile *fp = pd->file->open(name, kFileRead);
+  if (!fp) {
+    printf("%s\n", pd->file->geterr());
+    return NULL;
+  }
+
+  pd->file->seek(fp, 0, SEEK_END);
+  unsigned int size = pd->file->tell(fp);
+  pd->file->seek(fp, 0, SEEK_SET);
+
+  uint8_t *data = malloc(size);
+  *bytes_read = pd->file->read(fp, data, size);
+  pd->file->close(fp);
+
+  return data;
 }
 
 void exit(int) {}

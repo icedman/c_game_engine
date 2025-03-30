@@ -19,16 +19,16 @@
 #include <unistd.h>
 #endif
 
-// json_t *platform_load_asset_json(const char *name) {
-// 	uint32_t len;
-// 	uint8_t *data = platform_load_asset(name, &len);
-// 	if (data == NULL) {
-// 		return NULL;
-// 	}
-// 	json_t *v = json_parse(data, len);
-// 	temp_free(data);
-// 	return v;
-// }
+json_t *platform_load_asset_json(const char *name) {
+  uint32_t len;
+  uint8_t *data = platform_load_asset(name, &len);
+  if (data == NULL) {
+    return NULL;
+  }
+  json_t *v = json_parse(data, len);
+  free(data);
+  return v;
+}
 
 char *platform_executable_path(void) {
   uint32_t buffer_len = 2048;

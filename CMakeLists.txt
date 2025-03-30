@@ -45,6 +45,7 @@ file(GLOB SRC_FILES
 		engine/trace.c
 		engine/entity.c
 		engine/engine.c
+		engine/font.c
 		engine/map.c
 		src/scenes/game.c
 		src/entities/coin.c

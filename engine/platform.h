@@ -1,6 +1,7 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include "../libs/pl_json.h"
 #include "input.h"
 #include "types.h"
 #include "utils.h"
@@ -56,7 +57,7 @@ uint32_t platform_samplerate(void);
 uint8_t *platform_load_asset(const char *name, uint32_t *bytes_read);
 
 // Load a json file into temp memory. Must be freed via temp_free()
-// json_t *platform_load_asset_json(const char *name);
+json_t *platform_load_asset_json(const char *name);
 
 // Return the path to the current executable, bump allocated. Returns NULL
 // on failure.

@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "font.h"
 #include "input.h"
 #include "platform.h"
 
@@ -19,6 +20,9 @@ void main_init(void) {
   input_bind(INPUT_KEY_LEFT, A_LEFT);
   input_bind(INPUT_KEY_RIGHT, A_RIGHT);
   input_bind(INPUT_KEY_RETURN, A_START);
+
+  g.font = font("assets/font_04b03.qoi", "assets/font_04b03.json");
+  g.font->color = rgba(75, 84, 0, 255);
 
   engine_set_scene(&scene_game);
 

@@ -3,6 +3,7 @@
 
 #include "engine.h"
 #include "entity.h"
+#include "font.h"
 #include "input.h"
 #include "platform.h"
 #include "render.h"
@@ -22,7 +23,7 @@ typedef enum {
 // Global data
 
 typedef struct {
-  // font_t *font;
+  font_t *font;
   float score;
   float speed;
 } global_t;
