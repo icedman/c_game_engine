@@ -1,8 +1,8 @@
 #include "map.h"
 #include <string.h>
 // #include "alloc.h"
-#include "engine.h"
 #include "animation.h"
+#include "engine.h"
 #include "render.h"
 #include "utils.h"
 
@@ -46,9 +46,9 @@ map_t *map_with_data(uint16_t tile_size, vec2i_t size, uint16_t *data) {
 // 	}
 
 // 	char *tileset_name = json_string(json_value_for_key(def,
-// "tilesetName")); 	if (tileset_name && tileset_name[0]) { 		printf("loaded map %d
-// %d %s\n", map->size.x, map->size.y, tileset_name); 		map->tileset =
-// image(tileset_name);
+// "tilesetName")); 	if (tileset_name && tileset_name[0]) {
+// printf("loaded map %d %d %s\n", map->size.x, map->size.y, tileset_name);
+// map->tileset = image(tileset_name);
 // 	}
 
 // 	json_t *data = json_value_for_key(def, "data");
@@ -80,7 +80,7 @@ void map_set_anim_with_len(map_t *map, uint16_t tile, float frame_time,
   }
 
   if (!map->anims) {
-  	map->anims = malloc(sizeof(anim_def_t *) * map->max_tile);
+    map->anims = malloc(sizeof(anim_def_t *) * map->max_tile);
   }
 
   map_anim_def_t *def =
@@ -107,13 +107,13 @@ int map_tile_at_px(map_t *map, vec2_t px_pos) {
 
 static inline void map_draw_tile(map_t *map, uint16_t tile, vec2_t pos) {
   if (map->anims && map->anims[tile]) {
-  	map_anim_def_t *def = map->anims[tile];
-  	int frame = (int)(engine.time * def->inv_frame_time) %
-  def->sequence_len; 	tile = def->sequence[frame];
+    map_anim_def_t *def = map->anims[tile];
+    int frame = (int)(engine.time * def->inv_frame_time) % def->sequence_len;
+    tile = def->sequence[frame];
   }
 
   image_draw_tile(map->tileset, tile, vec2i(map->tile_size, map->tile_size),
-  pos);
+                  pos);
 }
 
 void map_draw(map_t *map, vec2_t offset) {
@@ -124,49 +124,43 @@ void map_draw(map_t *map, vec2_t offset) {
   int ts = map->tile_size;
 
   if (map->repeat) {
-  	vec2i_t tile_offset = vec2i_divi(vec2i_from_vec2(offset), ts);
-  	vec2_t px_offset = vec2(fmodf(offset.x, ts), fmodf(offset.y, ts));
-  	vec2_t px_min = vec2(-px_offset.x - ts, -px_offset.y - ts);
-  	vec2_t px_max = vec2(-px_offset.x + rs.x + ts, -px_offset.y + rs.y +
-  ts);
+    vec2i_t tile_offset = vec2i_divi(vec2i_from_vec2(offset), ts);
+    vec2_t px_offset = vec2(fmodf(offset.x, ts), fmodf(offset.y, ts));
+    vec2_t px_min = vec2(-px_offset.x - ts, -px_offset.y - ts);
+    vec2_t px_max = vec2(-px_offset.x + rs.x + ts, -px_offset.y + rs.y + ts);
 
-  	vec2_t pos = px_min;
-  	for (int map_y = -1; pos.y < px_max.y; map_y++, pos.y += ts) {
-  		int y = ((map_y + tile_offset.y) % map->size.y + map->size.y) %
-  map->size.y;
+    vec2_t pos = px_min;
+    for (int map_y = -1; pos.y < px_max.y; map_y++, pos.y += ts) {
+      int y =
+          ((map_y + tile_offset.y) % map->size.y + map->size.y) % map->size.y;
 
-  		pos.x = px_min.x;
-  		for (int map_x = -1; pos.x < px_max.x; map_x++, pos.x += ts) {
-  			int x = ((map_x + tile_offset.x) % map->size.x +
-  map->size.x) % map->size.x;
+      pos.x = px_min.x;
+      for (int map_x = -1; pos.x < px_max.x; map_x++, pos.x += ts) {
+        int x =
+            ((map_x + tile_offset.x) % map->size.x + map->size.x) % map->size.x;
 
-  			uint16_t tile = map->data[y * map->size.x + x];
+        uint16_t tile = map->data[y * map->size.x + x];
 
-  			if (tile > 0) {
-  				map_draw_tile(map, tile-1, pos);
-  			}
-  		}
-  	}
+        if (tile > 0) {
+          map_draw_tile(map, tile - 1, pos);
+        }
+      }
+    }
   }
 
   else {
-  	vec2i_t tile_min = vec2i(
-  		max(0, offset.x / ts),
-  		max(0, offset.y / ts)
-  	);
-  	vec2i_t tile_max = vec2i(
-  		min(map->size.x, (offset.x + rs.x + ts) / ts),
-  		min(map->size.y, (offset.y + rs.y + ts) / ts)
-  	);
+    vec2i_t tile_min = vec2i(max(0, offset.x / ts), max(0, offset.y / ts));
+    vec2i_t tile_max = vec2i(min(map->size.x, (offset.x + rs.x + ts) / ts),
+                             min(map->size.y, (offset.y + rs.y + ts) / ts));
 
-  	for (int y = tile_min.y; y < tile_max.y; y++) {
-  		for (int x = tile_min.x; x < tile_max.x; x++) {
-  			uint16_t tile = map->data[y * map->size.x + x];
-  			if (tile > 0) {
-  				vec2_t pos = vec2_sub(vec2(x * ts, y * ts),
-  offset); 				map_draw_tile(map, tile-1, pos);
-  			}
-  		}
-  	}
+    for (int y = tile_min.y; y < tile_max.y; y++) {
+      for (int x = tile_min.x; x < tile_max.x; x++) {
+        uint16_t tile = map->data[y * map->size.x + x];
+        if (tile > 0) {
+          vec2_t pos = vec2_sub(vec2(x * ts, y * ts), offset);
+          map_draw_tile(map, tile - 1, pos);
+        }
+      }
+    }
   }
 }

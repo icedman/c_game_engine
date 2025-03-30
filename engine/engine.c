@@ -201,9 +201,7 @@ void engine_update(void) {
 
 bool engine_is_running(void) { return is_running; }
 
-void engine_resize(vec2i_t size) {
-  render_resize(size);
-}
+void engine_resize(vec2i_t size) { render_resize(size); }
 
 void scene_base_update(void) { entities_update(); }
 
@@ -212,17 +210,17 @@ void scene_base_draw(void) {
 
   // Background maps
   for (int i = 0; i < engine.background_maps_len; i++) {
-  	if (!engine.background_maps[i]->foreground) {
-  		map_draw(engine.background_maps[i], px_viewport);
-  	}
+    if (!engine.background_maps[i]->foreground) {
+      map_draw(engine.background_maps[i], px_viewport);
+    }
   }
 
   entities_draw(px_viewport);
 
   // Foreground maps
   for (int i = 0; i < engine.background_maps_len; i++) {
-  	if (engine.background_maps[i]->foreground) {
-  		map_draw(engine.background_maps[i], px_viewport);
-  	}
+    if (engine.background_maps[i]->foreground) {
+      map_draw(engine.background_maps[i], px_viewport);
+    }
   }
 }

@@ -66,7 +66,7 @@ char *platform_executable_path(void);
 // the end.
 char *platform_dirname(char *path);
 
-// Load a file from the userdata directory into temp memory. Must be freed via 
+// Load a file from the userdata directory into temp memory. Must be freed via
 // temp_free(). This can be used for save games or configuration.
 uint8_t *platform_load_userdata(const char *name, uint32_t *bytes_read);
 
@@ -80,11 +80,11 @@ void platform_exit(void);
 void platform_set_audio_mix_cb(void (*cb)(float *buffer, uint32_t len));
 
 #if defined(RENDER_SOFTWARE)
-	rgba_t *platform_get_screenbuffer(int32_t *pitch);
+rgba_t *platform_get_screenbuffer(int32_t *pitch);
 #endif
 
 #if defined(RENDER_METAL)
-	void *platform_get_metal_layer(void);
+void *platform_get_metal_layer(void);
 #endif
 
 void platform_prepare_frame(void);

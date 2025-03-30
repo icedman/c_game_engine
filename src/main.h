@@ -4,10 +4,10 @@
 #include "engine.h"
 #include "entity.h"
 #include "input.h"
-#include "types.h"
-#include "utils.h"
 #include "platform.h"
 #include "render.h"
+#include "types.h"
+#include "utils.h"
 
 // -----------------------------------------------------------------------------
 // Button actions

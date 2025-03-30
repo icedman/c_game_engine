@@ -4,8 +4,8 @@
 #include <string.h>
 // #include "alloc.h"
 #include "platform.h"
-#include "trace.h"
 #include "render.h"
+#include "trace.h"
 
 #define ENTITY_STRINGIFY_NAME(ENUM, NAME) [ENUM] = #NAME,
 static const char *entity_type_names[] = {ENTITY_TYPES(ENTITY_STRINGIFY_NAME)};
@@ -369,8 +369,8 @@ void entity_base_damage(entity_t *self, entity_t *other, float damage) {
 
 void entity_base_draw(entity_t *self, vec2_t viewport) {
   if (self->anim.def != NULL) {
-  anim_draw(&self->anim, vec2_sub(vec2_sub(self->pos, viewport),
-  self->offset));
+    anim_draw(&self->anim,
+              vec2_sub(vec2_sub(self->pos, viewport), self->offset));
   }
 }
 
@@ -485,20 +485,20 @@ static void entity_resolve_collision(entity_t *a, entity_t *b) {
     if (a->pos.x < b->pos.x) {
       entities_separate_on_x_axis(a, b, a_move, b_move, overlap_x);
       entity_collide(a, vec2(-1, 0), NULL);
-      entity_collide(b, vec2( 1, 0), NULL);
+      entity_collide(b, vec2(1, 0), NULL);
     } else {
       entities_separate_on_x_axis(b, a, b_move, a_move, overlap_x);
-      entity_collide(a, vec2( 1, 0), NULL);
+      entity_collide(a, vec2(1, 0), NULL);
       entity_collide(b, vec2(-1, 0), NULL);
     }
   } else {
     if (a->pos.y < b->pos.y) {
       entities_separate_on_y_axis(a, b, a_move, b_move, overlap_y);
       entity_collide(a, vec2(0, -1), NULL);
-      entity_collide(b, vec2(0,  1), NULL);
+      entity_collide(b, vec2(0, 1), NULL);
     } else {
       entities_separate_on_y_axis(b, a, b_move, a_move, overlap_y);
-      entity_collide(a, vec2(0,  1), NULL);
+      entity_collide(a, vec2(0, 1), NULL);
       entity_collide(b, vec2(0, -1), NULL);
     }
   }
